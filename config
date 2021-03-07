@@ -117,7 +117,7 @@ DTBO_IMAGE=$BUILD_DIR/out/arch/arm64/boot/dtbo.img
 KERNEL_OUT="$BUILD_DIR/out"
 
 # Destination patch for Changelog
-CHANGELOG=$BUILD_DIR/$ANYKERNEL_DIR/Changelog.txt
+CHANGELOG=$ANYKERNEL_DIR/Changelog.txt
 
 # Destination Path for compiled modules
 MODULES_OUT=$BUILD_DIR/modules_out

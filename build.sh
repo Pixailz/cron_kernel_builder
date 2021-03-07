@@ -273,7 +273,11 @@ function make_anykernel_zip() {
 	printf "\n"
 	mkdir -p ${UPLOAD_DIR}
 	info "Copying kernel to anykernel zip directory"
-	cp "$KERNEL_IMAGE" "$ANYKERNEL_DIR"
+	if [[ ! -f "$KERNEL_IMAGE" ]]; then
+		warning "File missing. try relaunching scripts"
+	else
+		cp "$KERNEL_IMAGE" "$ANYKERNEL_DIR"
+	fi
 	if [ "$DO_DTBO" = true ]; then
 		info "Copying dtbo to zip directory"
 		cp "$DTBO_IMAGE" "$ANYKERNEL_DIR"
@@ -293,32 +297,30 @@ function make_anykernel_zip() {
 	info "Creating anykernel zip file"
 	cd "$ANYKERNEL_DIR"
 	zip -r "$ANY_ARCHIVE" *
-	info "Moving anykernel zip to output directory"
-	mv "$ANY_ARCHIVE" "$UPLOAD_DIR"
+	info "Moving any_kimo_${current_branch_id::7}.zip"
+	cp ${ANY_ARCHIVE} /home/pix/Dinosaure/any_kimo_${current_branch_id::7}.zip
 	printf "\n"
 	cd $BUILD_DIR
-	printf "\n"
 }
 
 function transfert_zip() {
-	cd $UPLOAD_DIR
-	info "Copying any_kimo_${UPSTREAM_GIT_VERSION}.zip"
-	cp ${ANY_ARCHIVE} /home/pix/Dinosaure/any_kimo_${UPSTREAM_GIT_VERSION::7}.zip
+	info "Copying any_kimo_${current_branch_id::7}.zip"
+	if [[ ! -f "$ANY_ARCHIVE" ]]; then
+		warning "File missing. try relaunching scripts"
+	else
+		cp ${ANY_ARCHIVE} /home/pix/Dinosaure/any_kimo_${current_branch_id::7}.zip
+	fi
 }
 
 function create_anykernel_zip() {
     make_aclean
     make_anykernel_zip
-	transfert_zip
 }
 ##############################################
 
 ##############################################
 # Setup Env and update git as needed
 function setup_env() {
-	cd ./android_kernel_oneplus_oneplus6
-	CURRENT_DIRECTORY=$(pwd)
-
 	latest_branch=$(git --no-pager branch -r --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
 	latest_branch_id=$(echo "${latest_branch}" | cut -d" " -f1)
 	latest_branch_name=$(echo "${latest_branch}" | cut -d" " -f2)
@@ -338,8 +340,7 @@ function setup_env() {
 			git pull
 		fi
 	fi
-	cd ..
-	BUILD_DIR="${CURRENT_DIRECTORY}/kali-nethunter-kernel"
+	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 }
 ##############################################
 
