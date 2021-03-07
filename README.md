@@ -9,3 +9,6 @@ i'm planning to use this as a cron jobs
 
 remove kali-nethunter-kernel content from [kimocoder repo](https://github.com/kimocoder/android_kernel_oneplus_oneplus6)
 and add this repo to the folder
+
+## TODO
+- add commit --short=7 to banner -> version
