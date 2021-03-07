@@ -7,5 +7,5 @@ i'm planning to use this as a cron jobs
 
 ## HOWTO
 
-remove kali-nethunter-kernel content from [kimocoder repo](https://github.com/kimocoder/android_kernel_oneplus_oneplus6)<br>
+remove kali-nethunter-kernel content from [kimocoder repo](https://github.com/kimocoder/android_kernel_oneplus_oneplus6)
 and add this repo to the folder
