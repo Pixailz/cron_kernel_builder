@@ -72,7 +72,7 @@ THREADS="$(grep -c ^processor /proc/cpuinfo)"
 NH_ARCHIVE="nethunter-kernel$LOCALVERSION.zip"
 
 # Anykernel zip name
-ANY_ARCHIVE="anykernel$LOCALVERSION.zip"
+ANY_ARCHIVE="any_kimo_${current_branch_id}.zip"
 
 # Image Type (Only ONE of the following (lz4/gz) can be enabled!)
 # GZ Image (Uncomment to Enable)
