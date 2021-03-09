@@ -17,7 +17,7 @@ print "Installing /sbin/modprobe symlink"
 mkdir -p sbin
 chmod 0755 sbin
 rm -rf sbin/modprobe
-ln -s /sbin/busybox_nh /sbin/modprobe
+ln -s /system/xbin/busybox sbin/modprobe
 
 cd "$tmp"
 

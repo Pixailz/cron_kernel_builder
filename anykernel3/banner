@@ -11,6 +11,6 @@
 ##                                              ##
 ####  ############# NetHunter ####################
    Kernel=NetHunter kernel
-   Version="3.0"
-   Author="johanlike" "kimocoder" 
+   Version="1.3"
+   Author="johanlike" "kimocoder"
    Builder="Pixailz"
