@@ -148,3 +148,5 @@ LOCAL_CONFIG=local.config
 if [ -f ${BUILD_DIR}/$LOCAL_CONFIG ]; then
         source ${BUILD_DIR}/$LOCAL_CONFIG
 fi
+
+OUTPUT_ZIP_FOLDER="/home/ftpix/Dinosaure/kernel/build"

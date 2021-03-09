@@ -308,7 +308,7 @@ function transfert_zip() {
 	if [[ ! -f "$ANY_ARCHIVE" ]]; then
 		warning "File missing. try relaunching scripts"
 	else
-		cp ${ANY_ARCHIVE} /home/pix/Dinosaure/any_kimo_${current_branch_id::7}.zip
+		cp ${ANY_ARCHIVE} ${OUTPUT_ZIP_FOLDER}
 	fi
 }
 
