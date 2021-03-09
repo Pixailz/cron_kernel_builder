@@ -342,6 +342,7 @@ function setup_env() {
 			git pull
 		fi
 	fi
+	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 }
 ##############################################
 
