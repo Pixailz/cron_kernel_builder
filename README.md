@@ -13,3 +13,5 @@ and add this repo to the folder
 ## TODO
 - add commit --short=7 to banner -> version
 - change updater (branch -> git fetch did the work)
+  - git fetch + git pull
+
