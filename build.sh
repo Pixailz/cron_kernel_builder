@@ -312,8 +312,7 @@ function create_anykernel_zip() {
 ##############################################
 # Setup Env and update git as needed
 function setup_env() {
-	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-	cd ${BUILD_DIR}
+	cd ..
 	git fetch
 	latest_branch=$(git --no-pager branch -r --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
 	latest_branch_id=$(echo "${latest_branch}" | cut -d" " -f1)
@@ -336,6 +335,7 @@ function setup_env() {
 		fi
 	fi
 	cd - >/dev/null
+	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 }
 ##############################################
 
