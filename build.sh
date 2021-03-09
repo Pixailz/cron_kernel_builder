@@ -298,18 +298,9 @@ function make_anykernel_zip() {
 	cd "$ANYKERNEL_DIR"
 	zip -r "$ANY_ARCHIVE" *
 	info "Moving any_kimo_${current_branch_id::7}.zip"
-	cp ${ANY_ARCHIVE} /home/pix/Dinosaure/any_kimo_${current_branch_id::7}.zip
+	cp ${ANY_ARCHIVE} ${OUTPUT_ZIP_FOLDER}
 	printf "\n"
 	cd $BUILD_DIR
-}
-
-function transfert_zip() {
-	info "Copying any_kimo_${current_branch_id::7}.zip"
-	if [[ ! -f "$ANY_ARCHIVE" ]]; then
-		warning "File missing. try relaunching scripts"
-	else
-		cp ${ANY_ARCHIVE} ${OUTPUT_ZIP_FOLDER}
-	fi
 }
 
 function create_anykernel_zip() {
