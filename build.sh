@@ -240,7 +240,7 @@ function compile_kernel() {
 function make_aclean() {
 	printf "\n"
 	info "Cleaning up anykernel zip directory"
-	rm -rf $ANYKERNEL_DIR/Image* $ANYKERNEL_DIR/dtb $CHANGELOG ${ANYKERNEL_DIR}/modules
+	rm -rf $ANYKERNEL_DIR/Image* $ANYKERNEL_DIR/dtb $CHANGELOG ${ANYKERNEL_DIR}/modules ${ANYKERNEL_DIR}/*.zip
 	success "Anykernel directory cleaned"
 }
 
