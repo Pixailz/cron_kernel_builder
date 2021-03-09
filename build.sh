@@ -321,6 +321,7 @@ function create_anykernel_zip() {
 ##############################################
 # Setup Env and update git as needed
 function setup_env() {
+	git fetch
 	latest_branch=$(git --no-pager branch -r --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
 	latest_branch_id=$(echo "${latest_branch}" | cut -d" " -f1)
 	latest_branch_name=$(echo "${latest_branch}" | cut -d" " -f2)
@@ -335,12 +336,12 @@ function setup_env() {
 			info "The Latest commit is comming from an another branches"
 			info "switching to it"
 			git checkout "${latest_branch_name}" -f
+			git pull
 		else
 			info "Pulling repo"
 			git pull
 		fi
 	fi
-	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 }
 ##############################################
 
