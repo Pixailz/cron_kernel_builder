@@ -296,10 +296,9 @@ function make_anykernel_zip() {
 	printf "\n"
 	info "Creating anykernel zip file"
 	cd "$ANYKERNEL_DIR"
-	BRANCH_ID_SHORT = "${current_branch_id::7}"
-	sed -i "/Version/c\   Version=\"$BRANCH_ID_SHORT\"" banner
+	sed -i "/Version/c\   Version=\"$CURRENT_BRANCH_SHORT7\"" banner
 	zip -r "$ANY_ARCHIVE" *
-	info "Moving any_kimo_${current_branch_id::7}.zip"
+	info "Moving any_kimo_${CURRENT_BRANCH_SHORT7}.zip"
 	cp ${ANY_ARCHIVE} ${OUTPUT_ZIP_FOLDER}
 	printf "\n"
 	cd $BUILD_DIR
@@ -312,40 +311,36 @@ function create_anykernel_zip() {
 ##############################################
 
 ##############################################
-# Setup Env and update git as needed
-function setup_env() {
-	cd ..
+# SetupEnv and update git as needed
+function set_up_env() {
+	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+	source ${BUILD_DIR}/config
+}
+
+function git_update() {
 	git fetch
-	latest_branch=$(git --no-pager branch -r --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
-	latest_branch_id=$(echo "${latest_branch}" | cut -d" " -f1)
-	latest_branch_name=$(echo "${latest_branch}" | cut -d" " -f2)
-	current_branch=$(git --no-pager branch --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
-	current_branch_id=$(echo "${current_branch}" | cut -d" " -f1)
-	current_branch_name=$(echo "${current_branch}" | cut -d" " -f2)
-	if [[ "${current_branch_id}" == "${latest_branch_id}" ]]; then
+	set_up_env
+	if [[ "${CURRENT_BRANCH_ID}" == "${LATEST_BRANCH_ID}" ]]; then
 		info "Already up-to-date"
 	else
 		warning "Not up-to-date"
-		if [[ "${current_branch_name}" != "${latest_branch_name}" ]]; then
+		if [[ "${CURRENT_BRANCH_NAME}" != "${LATEST_BRANCH_NAME}" ]]; then
 			info "The Latest commit is comming from an another branches"
 			info "switching to it"
-			git checkout "${latest_branch_name}" -f
+			git checkout "${LATEST_BRANCH_NAME}" -f
 			git pull
 		else
 			info "Pulling repo"
 			git reset --hard HEAD && git pull
 		fi
 	fi
-	cd - >/dev/null
-	BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 }
 ##############################################
 
 ##############################################
 # Main
-setup_env
 
-source ${BUILD_DIR}/config
+git_update
 
 compile_kernel
 
