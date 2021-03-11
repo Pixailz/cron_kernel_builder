@@ -29,23 +29,23 @@ function pause() {
 }
 
 function info() {
-        printf "${lcyan}[   INFO   ]${reset} $*${reset}\n"
+		printf "${lcyan}[   INFO   ]${reset} $*${reset}\n"
 }
 
 function success() {
-        printf "${lgreen}[ SUCCESS  ]${reset} $*${reset}\n"
+		printf "${lgreen}[ SUCCESS  ]${reset} $*${reset}\n"
 }
 
 function warning() {
-        printf "${lyellow}[ WARNING  ]${reset} $*${reset}\n"
+		printf "${lyellow}[ WARNING  ]${reset} $*${reset}\n"
 }
 
 function error() {
-        printf "${lmagenta}[  ERROR   ]${reset} $*${reset}\n"
+		printf "${lmagenta}[  ERROR   ]${reset} $*${reset}\n"
 }
 
 function question() {
-        printf "${yellow}[ QUESTION ]${reset} "
+		printf "${yellow}[ QUESTION ]${reset} "
 }
 
 ##############################################
@@ -72,10 +72,10 @@ function make_sclean() {
 	printf "\n"
 	info "Cleaning source directory"
 	if [ -f ${confdir}/$CONFIG.old ]; then
-	        rm -f ${confdir}/$CONFIG.old
+			rm -f ${confdir}/$CONFIG.old
 	fi
 	if [ -f ${confdir}/$CONFIG.new ]; then
-	        rm -f ${confdir}/$CONFIG.new
+			rm -f ${confdir}/$CONFIG.new
 	fi
 	success "Source directory cleaned"
 }
@@ -92,27 +92,27 @@ function setup_dirs() {
 
 ## Select defconfig file
 function select_defconfig() {
-    local IFS opt options f i
+	local IFS opt options f i
 	local confdir=${KDIR}/arch/$ARCH/configs
 	info "Please select the configuration you would like to use as basis"
 	printf "\n"
-    cd $confdir
-    while IFS= read -r -d $'\0' f; do
-        options[i++]="$f"
-    done < <(find * -type f -print0 )
+	cd $confdir
+	while IFS= read -r -d $'\0' f; do
+		options[i++]="$f"
+	done < <(find * -type f -print0 )
 
-    select opt in "${options[@]}" "Cancel"; do
-        case $opt in
-        "Cancel")
+	select opt in "${options[@]}" "Cancel"; do
+		case $opt in
+		"Cancel")
 			cd -
-            return 1
-            ;;
-        *)
-		    cd -
-		    break
-            ;;
-        esac
-    done
+			return 1
+			;;
+		*)
+			cd -
+			break
+			;;
+		esac
+	done
 	info "Using ${opt} as new ${CONFIG}"
 	cp ${confdir}/${opt} ${confdir}/${CONFIG}
 	return 0
@@ -123,25 +123,25 @@ function get_defconfig() {
 	local defconfig
 	local confdir=${KDIR}/arch/$ARCH/configs
 	printf "\n"
-    if [ ! -f ${confdir}/${CONFIG} ]; then
+	if [ ! -f ${confdir}/${CONFIG} ]; then
 		warning "${CONFIG} not found, creating."
 		select_defconfig
 		return $?
 	fi
-    return 0
+	return 0
 }
 
 ## Edit .config in working directory
 function edit_config() {
 	local cc
 	printf "\n"
-    # CC=clang cannot be exported. Let's compile with clang if "CC" is set to "clang" in the config
+	# CC=clang cannot be exported. Let's compile with clang if "CC" is set to "clang" in the config
 	if [ "$CC" == "clang" ]; then
 		cc="CC=clang"
 	fi
-    get_defconfig || return 1
-    info "Create config"
-    make -C $KDIR O="$KERNEL_OUT" $cc $CONFIG
+	get_defconfig || return 1
+	info "Create config"
+	make -C $KDIR O="$KERNEL_OUT" $cc $CONFIG
 	cfg_done=true
 }
 
@@ -150,18 +150,18 @@ function enable_ccache() {
 	if [ "$CCACHE" = true ]; then
 		if [ "$CC" == "clang" ]; then
 			CC="ccache clang"
-		    else
-            if [ ! -z "${CC}" ] && [[ ${CC} != ccache* ]]; then
-                CC="ccache $CC"
-            fi
-            if [ ! -z "${CROSS_COMPILE}" ] && [[ ${CROSS_COMPILE} != ccache* ]]; then
-                export CROSS_COMPILE="ccache ${CROSS_COMPILE}"
-            fi
-            if [ ! -z "${CROSS_COMPILE_ARM32}" ] && [[ ${CROSS_COMPILE_ARM32} != ccache* ]]; then
-                export CROSS_COMPILE_ARM32="ccache ${CROSS_COMPILE_ARM32}"
-            fi
-	    fi
-	    info "~~~~~~~~~~~~~~~~~~"
+			else
+			if [ ! -z "${CC}" ] && [[ ${CC} != ccache* ]]; then
+				CC="ccache $CC"
+			fi
+			if [ ! -z "${CROSS_COMPILE}" ] && [[ ${CROSS_COMPILE} != ccache* ]]; then
+				export CROSS_COMPILE="ccache ${CROSS_COMPILE}"
+			fi
+			if [ ! -z "${CROSS_COMPILE_ARM32}" ] && [[ ${CROSS_COMPILE_ARM32} != ccache* ]]; then
+				export CROSS_COMPILE_ARM32="ccache ${CROSS_COMPILE_ARM32}"
+			fi
+		fi
+		info "~~~~~~~~~~~~~~~~~~"
 		info " ccache enabled"
 		info "~~~~~~~~~~~~~~~~~~"
 	fi
@@ -181,7 +181,7 @@ function make_kernel() {
 	local cc
 	local confdir=${KDIR}/arch/$ARCH/configs
 	printf "\n"
-    # CC=clang cannot be exported. Let's compile with clang if "CC" is set to "clang" in the config
+	# CC=clang cannot be exported. Let's compile with clang if "CC" is set to "clang" in the config
 	if [ "$CC" == "clang" ]; then
 		cc="CC=clang"
 	fi
@@ -200,24 +200,24 @@ function make_kernel() {
 		if [ "$CC" == "ccache clang" ]; then
 			time make -C $KDIR CC="ccache clang"  -j "$THREADS" ${MAKE_ARGS}
 			if [ "$MODULES" = true ]; then
-		    		time make -C $KDIR CC="ccache clang" -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
+					time make -C $KDIR CC="ccache clang" -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
 			fi
 		else
 			time make -C $KDIR $cc -j "$THREADS" ${MAKE_ARGS}
 			if [ "$MODULES" = true ]; then
-		    		time make -C $KDIR $cc -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
+					time make -C $KDIR $cc -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
 			fi
 		fi
 	else
 		if [ "$CC" == "ccache clang" ]; then
 			time make -C $KDIR O="$KERNEL_OUT" CC="ccache clang" -j "$THREADS" ${MAKE_ARGS}
 			if [ "$MODULES" = true ]; then
-		    	time make -C $KDIR O="$KERNEL_OUT" CC="ccache clang" -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
+				time make -C $KDIR O="$KERNEL_OUT" CC="ccache clang" -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
 			fi
 		else
 			time make -C $KDIR O="$KERNEL_OUT" $cc -j "$THREADS" ${MAKE_ARGS}
 			if [ "$MODULES" = true ]; then
-		    	time make -C $KDIR O="$KERNEL_OUT" $cc -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
+				time make -C $KDIR O="$KERNEL_OUT" $cc -j "$THREADS" INSTALL_MOD_PATH=$MODULES_OUT modules_install
 			fi
 		fi
 	fi
@@ -227,10 +227,10 @@ function make_kernel() {
 }
 
 function compile_kernel() {
-    make_oclean
-    make_sclean
-    setup_dirs
-    edit_config && make_kernel
+	make_oclean
+	make_sclean
+	setup_dirs
+	edit_config && make_kernel
 }
 ##############################################
 
@@ -296,6 +296,8 @@ function make_anykernel_zip() {
 	printf "\n"
 	info "Creating anykernel zip file"
 	cd "$ANYKERNEL_DIR"
+	BRANCH_ID_SHORT = "${current_branch_id::7}"
+	sed -i "/Version/c\   Version=\"$BRANCH_ID_SHORT\"" banner
 	zip -r "$ANY_ARCHIVE" *
 	info "Moving any_kimo_${current_branch_id::7}.zip"
 	cp ${ANY_ARCHIVE} ${OUTPUT_ZIP_FOLDER}
@@ -304,8 +306,8 @@ function make_anykernel_zip() {
 }
 
 function create_anykernel_zip() {
-    make_aclean
-    make_anykernel_zip
+	make_aclean
+	make_anykernel_zip
 }
 ##############################################
 

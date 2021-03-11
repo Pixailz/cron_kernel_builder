@@ -11,6 +11,5 @@ remove kali-nethunter-kernel content from [kimocoder repo](https://github.com/ki
 and add this repo to the folder
 
 ## TODO
-- add commit --short=7 to ./anykernel3/banner -> version
 - add original setup_env for downloading every toolchain
 - fix make_clog()
