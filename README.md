@@ -13,3 +13,4 @@ and add this repo to the folder
 ## TODO
 - add original setup_env for downloading every toolchain
 - fix make_clog()
+- fix version --short=7
