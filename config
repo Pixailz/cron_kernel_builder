@@ -71,9 +71,6 @@ THREADS="$(grep -c ^processor /proc/cpuinfo)"
 # NetHunter Kernel zip name
 NH_ARCHIVE="nethunter-kernel$LOCALVERSION.zip"
 
-# Anykernel zip name
-ANY_ARCHIVE="any_kimo_${current_branch_id::7}.zip"
-
 # Image Type (Only ONE of the following (lz4/gz) can be enabled!)
 # GZ Image (Uncomment to Enable)
 IMAGE_NAME=Image.gz-dtb
@@ -162,5 +159,8 @@ LATEST_BRANCH_NAME=$(echo "${LATEST_BRANCH}" | cut -d" " -f2)
 
 CURRENT_BRANCH=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && git --no-pager branch --sort='committerdate' --format='%(objectname) %(refname:lstrip=-1)' | tail -1)
 CURRENT_BRANCH_ID=$(echo "${LATEST_BRANCH}" | cut -d" " -f1)
-CURRENT_BRANCH_SHORT7=$(echo ${CURRENT_BRANCH_ID} | cut -c-7)
+CURRENT_BRANCH_SHORT7=$(echo "${CURRENT_BRANCH_ID}" | cut -c-7)
 CURRENT_BRANCH_NAME=$(echo "${LATEST_BRANCH}" | cut -d" " -f2)
+
+# Anykernel zip name
+ANY_ARCHIVE="any_kimo_${current_branch_id::7}.zip"
